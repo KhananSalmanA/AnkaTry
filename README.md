@@ -1,4 +1,4 @@
-# 🎯 Kawan UTBK  
+# 🎯 Platform Belajar Interaktif (AnkaTry)  
 **Platform Belajar Interaktif untuk Membantu Pejuang UTBK Mencapai PTN Impian**
 
 **Kawan UTBK** adalah platform edukasi yang dirancang khusus untuk siswa yang sedang mempersiapkan diri menghadapi UTBK. Melalui fitur latihan soal, simulasi try out, dan sistem leaderboard, pengguna dapat belajar dengan lebih semangat, terarah, dan kompetitif.
