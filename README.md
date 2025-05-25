@@ -1,7 +1,7 @@
 # 🎯 Platform Belajar Interaktif (AnkaTry)  
 **Platform Belajar Interaktif untuk Membantu Pejuang UTBK Mencapai PTN Impian**
 
-**Kawan UTBK** adalah platform edukasi yang dirancang khusus untuk siswa yang sedang mempersiapkan diri menghadapi UTBK. Melalui fitur latihan soal, simulasi try out, dan sistem leaderboard, pengguna dapat belajar dengan lebih semangat, terarah, dan kompetitif.
+**AnkaTry** adalah platform edukasi yang dirancang khusus untuk pelajar yang ingin menguji kemampuannya. Melalui fitur latihan soal dan sistem leaderboard, pengguna dapat belajar dengan lebih semangat, terarah, dan kompetitif.
 
 ---
 
@@ -12,9 +12,6 @@ Pengguna wajib membuat akun dengan email dan kata sandi untuk mengakses fitur le
 
 🧠 **Mini Quizz**  
 Latihan soal singkat untuk mengasah pemahaman dasar secara cepat.
-
-📘 **Try Out UTBK**  
-Simulasi ujian dengan soal komprehensif seperti UTBK asli, lengkap dengan penilaian otomatis.
 
 🏆 **Leaderboard**  
 Papan peringkat berdasarkan skor dari mini quizz dan try out untuk menumbuhkan motivasi belajar.
@@ -29,7 +26,7 @@ Lihat statistik belajar, riwayat hasil latihan, dan informasi pribadi dalam satu
 1. ✍️ **Registrasi atau Login**  
    Pengguna membuat akun atau masuk menggunakan email dan kata sandi.
 
-2. 📝 **Mengerjakan Mini Quizz atau Try Out**  
+2. 📝 **Mengerjakan Mini Quizz**  
    Pilih jenis latihan dan kerjakan soal yang tersedia sesuai bidang atau topik.
 
 3. 📊 **Mendapatkan Skor dan Masuk Leaderboard**  
@@ -52,4 +49,4 @@ Lihat statistik belajar, riwayat hasil latihan, dan informasi pribadi dalam satu
 
 ---
 
-> 📌 *"Kawan UTBK hadir sebagai teman seperjuanganmu menuju kampus impian. Ayo belajar bareng dan raih skor terbaik!"*
+> 📌 *"AnkaTry hadir sebagai teman untuk mengembangkan diri. Ayo belajar bareng dan raih skor terbaik!"*
