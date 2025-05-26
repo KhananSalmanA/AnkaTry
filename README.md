@@ -35,6 +35,9 @@ Lihat statistik belajar, riwayat hasil latihan, dan informasi pribadi dalam satu
 ---
 
 ## 🚀 Teknologi yang Digunakan
+1. HTML
+2. CSS
+3. PHP
 
 ---
 
