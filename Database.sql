@@ -162,9 +162,6 @@ CREATE TABLE IF NOT EXISTS `quiz_history` (
   KEY `id_grup` (`id_grup`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Perubahan struktur tabel soal: tambah kolom image
-ALTER TABLE `soal` ADD COLUMN `image` varchar(255) DEFAULT NULL AFTER `pertanyaan`;
-
 -- Pembuatan atau update tabel materi untuk mendukung gambar
 CREATE TABLE IF NOT EXISTS `materi` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
