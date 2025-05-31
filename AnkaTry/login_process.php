@@ -1,6 +1,12 @@
 <?php
 session_start();
-include 'koneksi.php'; // ganti sesuai nama file koneksi kamu
+include 'koneksi.php'; // File koneksi database
+
+// Validasi input
+if(empty($_POST['username']) || empty($_POST['password'])) {
+    header("Location: login.php?error=empty");
+    exit();
+}
 
 $username = $_POST['username'];
 $password = $_POST['password'];
@@ -14,8 +20,10 @@ $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
 if ($user && password_verify($password, $user['password'])) {
+    // Set session
     $_SESSION['username'] = $user['username'];
     $_SESSION['role'] = $user['role'];
+    $_SESSION['user_id'] = $user['id'];
 
     // Arahkan ke dashboard berdasarkan role
     if ($user['role'] === 'admin') {
@@ -25,6 +33,8 @@ if ($user && password_verify($password, $user['password'])) {
     }
     exit();
 } else {
-    echo "<script>alert('Username atau password salah!'); window.location.href='login.php';</script>";
+    // Login gagal
+    header("Location: login.php?error=invalid");
+    exit();
 }
 ?>
