@@ -30,9 +30,9 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
             <button class="sidebar-close" onclick="toggleSidebar()" aria-label="Close sidebar">&times;</button>
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#" onclick="showSection('buat-soal')">Buat Soal</a></li>
-            <li><a href="#" onclick="showSection('daftar-soal')">Daftar Soal</a></li>
-            <li><a href="#" onclick="showSection('tambah-materi')">Tambah Materi</a></li>
+            <li><a href="tambahsoal.php">Buat Soal</a></li>
+            <li><a href="daftarsoal.php">Daftar Soal</a></li>
+            <li><a href="tambahmateri.php">Tambah Materi</a></li>
             <li><a href="#" onclick="showSection('daftar-materi')">Daftar Materi</a></li>
         </ul>
         <div class="sidebar-logout">
@@ -41,14 +41,6 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     </div>
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <div class="dashboard-content">
-        <div id="buat-soal-section" style="display:none;">
-            <h2>Buat Soal</h2>
-            <p>Form tambah soal akan di sini.</p>
-        </div>
-        <div id="daftar-soal-section" style="display:none;">
-            <h2>Daftar Soal</h2>
-            <p>Daftar soal akan di sini.</p>
-        </div>
         <div id="tambah-materi-section" style="display:none;">
             <h2>Tambah Materi</h2>
             <p>Form tambah materi akan di sini.</p>

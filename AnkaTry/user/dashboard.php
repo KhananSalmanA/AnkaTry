@@ -46,7 +46,7 @@ $conn->close();
         </div>
         <ul class="sidebar-menu">
             <li><a href="#" onclick="showSection('profile')">Profile</a></li>
-            <li><a href="#" onclick="showSection('latihan')">Latihan Soal</a></li>
+            <li><a href="latihansoal.php">Latihan Soal</a></li>
             <li><a href="#" onclick="showSection('materi')">Materi Soal</a></li>
             <li><a href="#" onclick="showSection('leaderboard')">Leaderboard</a></li>
         </ul>
@@ -86,8 +86,7 @@ $conn->close();
             </table>
         </div>
         <div id="latihan-section" style="display:none;">
-            <h2>Latihan Soal</h2>
-            <p>Menu latihan soal akan tersedia di sini.</p>
+            <!-- Hapus seluruh isi latihan-section, karena sekarang diarahkan ke latihansoal.php -->
         </div>
         <div id="materi-section" style="display:none;">
             <h2>Materi Soal</h2>
