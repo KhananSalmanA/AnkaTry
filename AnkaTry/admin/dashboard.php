@@ -308,7 +308,7 @@ if($result->num_rows > 0) {
             <li><a href="tambahsoal.php">📝 Buat Soal</a></li>
             <li><a href="daftarsoal.php">📋 Daftar Soal</a></li>
             <li><a href="tambahmateri.php">📚 Tambah Materi</a></li>
-            <li><a href="daftarmateri.php">📖 Daftar Materi</a></li>
+            <li><a href="materi.php">📖 Daftar Materi</a></li>
             <li><a href="leaderboard.php">🏆 Leaderboard</a></li>
         </ul>
         <div class="sidebar-logout">
