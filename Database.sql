@@ -146,3 +146,29 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+-- Tambahan struktur tabel untuk riwayat kuis
+CREATE TABLE IF NOT EXISTS `quiz_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `id_grup` int(11) NOT NULL,
+  `score` int(11) NOT NULL,
+  `max_score` int(11) NOT NULL,
+  `percentage` decimal(5,2) NOT NULL,
+  `completed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `id_grup` (`id_grup`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Pembuatan atau update tabel materi untuk mendukung gambar
+CREATE TABLE IF NOT EXISTS `materi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `deskripsi` text NOT NULL,
+  `file` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `link` varchar(500) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
