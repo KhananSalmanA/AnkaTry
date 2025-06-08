@@ -305,6 +305,7 @@ if($result->num_rows > 0) {
             <button class="sidebar-close" onclick="toggleSidebar()" aria-label="Close sidebar">&times;</button>
         </div>
         <ul class="sidebar-menu">
+            <li><a href="dashboard.php">🏠 Dashboard</a></li>
             <li><a href="tambahsoal.php">📝 Buat Soal</a></li>
             <li><a href="daftarsoal.php">📋 Daftar Soal</a></li>
             <li><a href="tambahmateri.php">📚 Tambah Materi</a></li>
