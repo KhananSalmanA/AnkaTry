@@ -396,7 +396,6 @@ $stmt->close();
             <a href="../logout.php">Logout</a>
         </div>
     </div>
-    
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     
     <div class="dashboard-content">

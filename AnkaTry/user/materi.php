@@ -205,14 +205,98 @@ $materi = $conn->query($materi_query);
                 flex-direction: column;
             }
         }
+        
+        .sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: left 0.3s ease;
+            z-index: 1001;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+        }
+        .sidebar.open { left: 0; }
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sidebar-title { font-size: 1.3rem; font-weight: bold; color: #333; }
+        .sidebar-close {
+            background: none; border: none; font-size: 2rem; cursor: pointer; color: #666;
+            padding: 0.5rem; border-radius: 50%; transition: all 0.3s;
+        }
+        .sidebar-close:hover { background: rgba(0,0,0,0.1); color: #333; }
+        .sidebar-menu { list-style: none; padding: 1rem 0; }
+        .sidebar-menu li { margin: 0.5rem 0; }
+        .sidebar-menu a {
+            display: block; padding: 1rem 2rem; color: #333; text-decoration: none;
+            transition: all 0.3s; border-left: 4px solid transparent;
+        }
+        .sidebar-menu a:hover {
+            background: rgba(102, 126, 234, 0.1); border-left-color: #667eea; color: #667eea;
+        }
+        .sidebar-logout {
+            position: absolute; bottom: 2rem; left: 2rem; right: 2rem;
+        }
+        .sidebar-logout a {
+            display: block; padding: 1rem; background: #ff4757; color: white;
+            text-decoration: none; border-radius: 8px; text-align: center; transition: background 0.3s;
+        }
+        .sidebar-logout a:hover { background: #ff3742; }
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s;
+        }
+        .sidebar-overlay.active { opacity: 1; visibility: visible; }
+        .sidebar-toggle {
+            background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: background 0.3s;
+            margin-right: 1rem; vertical-align: middle;
+        }
+        .sidebar-toggle:hover { background: rgba(0,0,0,0.1); }
+        .hamburger {
+            display: block; width: 25px; height: 3px; background: #333; margin: 5px 0; transition: 0.3s; border-radius: 2px;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="navbar-title">📚 Materi Pembelajaran</div>
+        <div class="navbar-title">
+            <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Open sidebar">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            📚 Materi Pembelajaran
+        </div>
         <div class="navbar-link"><a href="dashboard.php">← Kembali ke Dashboard</a></div>
     </nav>
     
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-title">Menu</span>
+            <button class="sidebar-close" onclick="toggleSidebar()" aria-label="Close sidebar">&times;</button>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.php">👤 Profile</a></li>
+            <li><a href="latihansoal.php">📝 Latihan Soal</a></li>
+            <li><a href="materi.php">📚 Materi Soal</a></li>
+            <li><a href="leaderboard.php">🏆 Leaderboard</a></li>
+            <li><a href="history.php">📊 History</a></li>
+        </ul>
+        <div class="sidebar-logout">
+            <a href="../logout.php">Logout</a>
+        </div>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <!-- End Sidebar -->
+
     <div class="page-container">
         <div class="materi-container">
             <div class="materi-header">
@@ -266,6 +350,19 @@ $materi = $conn->query($materi_query);
     </div>
 
     <script>
+        // Sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") {
+                document.getElementById('sidebar').classList.remove('open');
+                document.getElementById('sidebarOverlay').classList.remove('active');
+            }
+        });
         // Animasi untuk materi cards
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.materi-card');

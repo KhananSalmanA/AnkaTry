@@ -362,14 +362,99 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_grup']) && isset($
                 margin-bottom: 1rem;
             }
         }
+        
+        /* Sidebar styles */
+        .sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: left 0.3s ease;
+            z-index: 1001;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+        }
+        .sidebar.open { left: 0; }
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sidebar-title { font-size: 1.3rem; font-weight: bold; color: #333; }
+        .sidebar-close {
+            background: none; border: none; font-size: 2rem; cursor: pointer; color: #666;
+            padding: 0.5rem; border-radius: 50%; transition: all 0.3s;
+        }
+        .sidebar-close:hover { background: rgba(0,0,0,0.1); color: #333; }
+        .sidebar-menu { list-style: none; padding: 1rem 0; }
+        .sidebar-menu li { margin: 0.5rem 0; }
+        .sidebar-menu a {
+            display: block; padding: 1rem 2rem; color: #333; text-decoration: none;
+            transition: all 0.3s; border-left: 4px solid transparent;
+        }
+        .sidebar-menu a:hover {
+            background: rgba(102, 126, 234, 0.1); border-left-color: #667eea; color: #667eea;
+        }
+        .sidebar-logout {
+            position: absolute; bottom: 2rem; left: 2rem; right: 2rem;
+        }
+        .sidebar-logout a {
+            display: block; padding: 1rem; background: #ff4757; color: white;
+            text-decoration: none; border-radius: 8px; text-align: center; transition: background 0.3s;
+        }
+        .sidebar-logout a:hover { background: #ff3742; }
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s;
+        }
+        .sidebar-overlay.active { opacity: 1; visibility: visible; }
+        .sidebar-toggle {
+            background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 8px; transition: background 0.3s;
+            margin-right: 1rem; vertical-align: middle;
+        }
+        .sidebar-toggle:hover { background: rgba(0,0,0,0.1); }
+        .hamburger {
+            display: block; width: 25px; height: 3px; background: #333; margin: 5px 0; transition: 0.3s; border-radius: 2px;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="navbar-title">📝 Latihan Soal</div>
+        <div class="navbar-title">
+            <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Open sidebar">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            📝 Latihan Soal
+        </div>
         <div class="navbar-link"><a href="dashboard.php">← Kembali ke Dashboard</a></div>
     </nav>
-    
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-title">Menu</span>
+            <button class="sidebar-close" onclick="toggleSidebar()" aria-label="Close sidebar">&times;</button>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.php">👤 Profile</a></li>
+            <li><a href="latihansoal.php">📝 Latihan Soal</a></li>
+            <li><a href="materi.php">📚 Materi Soal</a></li>
+            <li><a href="leaderboard.php">🏆 Leaderboard</a></li>
+            <li><a href="history.php">📊 History</a></li>
+        </ul>
+        <div class="sidebar-logout">
+            <a href="../logout.php">Logout</a>
+        </div>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <!-- End Sidebar -->
+
     <div class="page-container">
         <div class="form-container">
             <h1>🎯 Pilih Quiz yang Ingin Dikerjakan</h1>
@@ -464,22 +549,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_grup']) && isset($
         // Timer functionality
         let startTime = Date.now();
         let timerInterval;
-        
+
         function updateTimer() {
             const elapsed = Date.now() - startTime;
             const minutes = Math.floor(elapsed / 60000);
             const seconds = Math.floor((elapsed % 60000) / 1000);
-            document.getElementById('time').textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const timeElement = document.getElementById('time');
+            if (timeElement) {
+                timeElement.textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
         }
-        
+
         if (document.getElementById('timer')) {
             timerInterval = setInterval(updateTimer, 1000);
         }
-        
+
+        // Clear all progress data
+        function clearAllProgress() {
+            // Clear all quiz progress from localStorage
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('quiz_progress_')) {
+                    localStorage.removeItem(key);
+                }
+            });
+        }
+
+        // Clear specific quiz progress
+        function clearQuizProgress(quizId) {
+            localStorage.removeItem('quiz_progress_' + quizId);
+        }
+
         // Konfirmasi submit
         function confirmSubmit() {
             const form = document.getElementById('quizForm');
+            if (!form) return true;
+            
             const radios = form.querySelectorAll('input[type="radio"]');
             const questions = form.querySelectorAll('.soal-group');
             
@@ -491,48 +596,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_grup']) && isset($
             });
             
             if (answered < questions.length) {
-                return confirm(`Anda baru menjawab ${answered} dari ${questions.length} soal. Yakin ingin mengumpulkan?`);
+                const confirm = window.confirm(`Anda baru menjawab ${answered} dari ${questions.length} soal. Yakin ingin mengumpulkan?`);
+                if (!confirm) return false;
             }
             
             clearInterval(timerInterval);
-            return confirm('Yakin ingin mengumpulkan jawaban? Pastikan semua jawaban sudah benar.');
+            
+            // Clear progress setelah submit
+            const currentQuizId = <?= isset($_GET['id_grup']) ? $_GET['id_grup'] : 0 ?>;
+            clearQuizProgress(currentQuizId);
+            
+            return window.confirm('Yakin ingin mengumpulkan jawaban? Pastikan semua jawaban sudah benar.');
         }
-        
-        // Auto-save progress (optional)
+
+        // Auto-save progress
         function saveProgress() {
             const form = document.getElementById('quizForm');
-            if (form) {
-                const formData = new FormData(form);
-                const answers = {};
-                for (let [key, value] of formData.entries()) {
-                    if (key.startsWith('jawaban[')) {
-                        answers[key] = value;
-                    }
+            if (!form) return;
+            
+            const currentQuizId = <?= isset($_GET['id_grup']) ? $_GET['id_grup'] : 0 ?>;
+            if (currentQuizId === 0) return;
+            
+            const formData = new FormData(form);
+            const answers = {};
+            for (let [key, value] of formData.entries()) {
+                if (key.startsWith('jawaban[')) {
+                    answers[key] = value;
                 }
-                localStorage.setItem('quiz_progress_' + <?= isset($_GET['id_grup']) ? $_GET['id_grup'] : 0 ?>, JSON.stringify(answers));
             }
+            localStorage.setItem('quiz_progress_' + currentQuizId, JSON.stringify(answers));
         }
-        
+
         // Load saved progress
         function loadProgress() {
-            const saved = localStorage.getItem('quiz_progress_' + <?= isset($_GET['id_grup']) ? $_GET['id_grup'] : 0 ?>);
+            const currentQuizId = <?= isset($_GET['id_grup']) ? $_GET['id_grup'] : 0 ?>;
+            if (currentQuizId === 0) return;
+            
+            const saved = localStorage.getItem('quiz_progress_' + currentQuizId);
             if (saved) {
-                const answers = JSON.parse(saved);
-                for (let [key, value] of Object.entries(answers)) {
-                    const input = document.querySelector(`input[name="${key}"][value="${value}"]`);
-                    if (input) input.checked = true;
+                try {
+                    const answers = JSON.parse(saved);
+                    for (let [key, value] of Object.entries(answers)) {
+                        const input = document.querySelector(`input[name="${key}"][value="${value}"]`);
+                        if (input) input.checked = true;
+                    }
+                } catch (e) {
+                    // Jika data corrupt, hapus
+                    clearQuizProgress(currentQuizId);
                 }
             }
         }
-        
+
+        // Reset form ketika memulai quiz baru
+        function resetQuizForm() {
+            const form = document.getElementById('quizForm');
+            if (form) {
+                form.reset();
+                // Clear semua radio button
+                form.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.checked = false;
+                });
+            }
+        }
+
         // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            loadProgress();
+            const currentQuizId = <?= isset($_GET['id_grup']) ? $_GET['id_grup'] : 0 ?>;
             
-            // Save progress on radio change
-            document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.addEventListener('change', saveProgress);
-            });
+            // Jika sedang mengerjakan quiz
+            if (currentQuizId > 0) {
+                // Reset form terlebih dahulu
+                resetQuizForm();
+                
+                // Tanya user apakah ingin melanjutkan progress sebelumnya
+                const saved = localStorage.getItem('quiz_progress_' + currentQuizId);
+                if (saved) {
+                    const continueProgress = window.confirm('Ditemukan progress quiz sebelumnya. Ingin melanjutkan?');
+                    if (continueProgress) {
+                        loadProgress();
+                    } else {
+                        clearQuizProgress(currentQuizId);
+                    }
+                }
+                
+                // Save progress on radio change
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('change', saveProgress);
+                });
+            }
             
             // Smooth scroll animation for quiz cards
             document.querySelectorAll('.quiz-card').forEach((card, index) => {
@@ -544,13 +695,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_grup']) && isset($
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
                 }, index * 100);
+                
+                // Clear progress ketika memilih quiz baru
+                card.addEventListener('click', function() {
+                    clearAllProgress();
+                });
             });
         });
-        
-        // Clear saved progress on successful submit
-        window.addEventListener('beforeunload', function() {
-            if (document.querySelector('.result-card')) {
-                localStorage.removeItem('quiz_progress_' + <?= isset($_GET['id_grup']) ? $_GET['id_grup'] : 0 ?>);
+
+        // Clear progress ketika pindah halaman (kecuali submit)
+        window.addEventListener('beforeunload', function(e) {
+            // Jangan clear jika sedang submit form
+            const form = document.getElementById('quizForm');
+            if (form && form.dataset.submitting !== 'true') {
+                // User meninggalkan halaman tanpa submit, simpan progress
+                return;
+            }
+        });
+
+        // Tandai form sedang disubmit
+        document.addEventListener('submit', function(e) {
+            if (e.target.id === 'quizForm') {
+                e.target.dataset.submitting = 'true';
+            }
+        });
+
+        // Clear progress ketika kembali ke daftar quiz
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('a[href="latihansoal.php"]')) {
+                clearAllProgress();
+            }
+        });
+
+        // Sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") {
+                document.getElementById('sidebar').classList.remove('open');
+                document.getElementById('sidebarOverlay').classList.remove('active');
             }
         });
     </script>
