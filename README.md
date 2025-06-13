@@ -38,12 +38,13 @@ Lihat statistik belajar, riwayat hasil latihan, dan informasi pribadi dalam satu
 1. HTML
 2. CSS
 3. PHP
-
+4. Exampp
 ---
 
 ## 👨‍💻 Anggota Tim
 
-| 👤 Nama                          | 🆔 NIM           | 💼 Peran              |
+| 👤 Nama    PHP
+| 🆔 NIM           | 💼 Peran              |
 |----------------------------------|------------------|------------------------|
 | Khanan Salman Alfarisi    | 23106050006      | Software Developer        |
 | Annisa Iddelia Furkon                    | 23106050009      | Project Manager        |
