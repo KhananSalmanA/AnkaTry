@@ -47,7 +47,7 @@ Lihat statistik belajar, riwayat hasil latihan, dan informasi pribadi dalam satu
 |----------------------------------|------------------|------------------------|
 | Khanan Salman Alfarisi    | 23106050006      | Software Developer        |
 | Annisa Iddelia Furkon                    | 23106050009      | Project Manager        |
-| Muhammad Azzam Rabbani            | 23106050026      |   UI/UX Engineer   |
+| Muhammad Azzam Rabbani            | 23106050026      |   Tester & DBA   |
 | Cleonando Aprilian             | 23106050055      | System Analyst         |
 
 ---
